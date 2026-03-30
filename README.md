@@ -43,6 +43,12 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+### Testing PawPal+
+
+- Run tests using the command
+  `python -m pytest tests/test_pawpal.py -v`
+- Confidence level: 4-5 out 5
+
 ### Suggested workflow
 
 1. Read the scenario carefully and identify requirements and edge cases.

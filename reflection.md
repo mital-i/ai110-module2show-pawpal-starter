@@ -18,7 +18,7 @@
 
 **b. Design changes**
 
-- Did your design change during implementation Yes
+- Did your design change during implementation. Yes
 - If yes, describe at least one change and why you made it. I added a Schedular class to manage the rest of the 4 classes so that it would be easier to manage changes to the other objects. Schedular object makes it easy to access attributes and methods in the other 4 classes.
 
 ---
@@ -27,13 +27,13 @@
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+- What constraints does your scheduler consider (for example: time, priority, preferences)? The schedule considers time, in particular it makes sure that no tasks for the same pet start at the same time. The tasks are ordered in chronological order by time.
+- How did you decide which constraints mattered most? I decided time matters the most because it was important to do certain things in a timely way, such as feeding the pet on time and taking it to the vet. Priority is hard to measure while time is straightforward.
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes. The scheduler uses slot-based scheduling (morning, afternoon, evening) where all tasks in the same preferred time slot are scheduled starting at the same time (e.g., all morning tasks at 06:00), which can lead to overlaps within the slot. This simplifies the logic by avoiding complex staggering algorithms but may result in unrealistic schedules where multiple tasks occur simultaneously for the same pet or across pets.
-- Why is that tradeoff reasonable for this scenario? This tradeoff is reasonable for a pet care app prototype because it prioritizes ease of implementation and clear grouping by time preferences, allowing quick detection of potential conflicts via warnings. In a real-world app, owners can manually adjust timings, and the warnings help identify issues without overcomplicating the core scheduling logic.
+- Describe one tradeoff your scheduler makes. The scheduler uses slot-based scheduling (morning, afternoon, evening) where all tasks in the same preferred slot are scheduled starting at the same time, which can lead to overlaps within the slot. This simplifies the logic by avoiding complex algorithms but may result in unrealistic schedules where multiple tasks occur simultaneously for the same pet or across pets. However it also makes it easier to detect conflicts (we just check for overlap within a slot for a particular pet).
+- Why is that tradeoff reasonable for this scenario? This tradeoff is reasonable for a pet care app prototype because it prioritizes feasibility of implementation and clear grouping by time preferences, allowing quick detection of time conflicts. In a real-world app, owners can manually adjust timings, and the warnings help identify issues without overcomplicating the core scheduling logic. It also prevents the app from crashing.
 
 ---
 
