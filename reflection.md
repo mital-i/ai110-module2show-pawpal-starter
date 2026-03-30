@@ -32,8 +32,8 @@
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+- Describe one tradeoff your scheduler makes. The scheduler uses slot-based scheduling (morning, afternoon, evening) where all tasks in the same preferred time slot are scheduled starting at the same time (e.g., all morning tasks at 06:00), which can lead to overlaps within the slot. This simplifies the logic by avoiding complex staggering algorithms but may result in unrealistic schedules where multiple tasks occur simultaneously for the same pet or across pets.
+- Why is that tradeoff reasonable for this scenario? This tradeoff is reasonable for a pet care app prototype because it prioritizes ease of implementation and clear grouping by time preferences, allowing quick detection of potential conflicts via warnings. In a real-world app, owners can manually adjust timings, and the warnings help identify issues without overcomplicating the core scheduling logic.
 
 ---
 

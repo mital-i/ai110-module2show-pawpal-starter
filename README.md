@@ -22,6 +22,17 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
+## Smarter Scheduling
+
+The PawPal+ scheduler now includes advanced features for efficient pet care planning:
+
+- **Time-based Sorting**: Tasks are sorted by preferred time slots (morning/afternoon/evening) using datetime parsing for accurate chronological ordering.
+- **Flexible Filtering**: Filter tasks by pet name or completion status to focus on specific needs or incomplete items.
+- **Recurring Task Management**: Daily and weekly tasks automatically generate new instances for the next occurrence when completed, using timedelta for precise date calculations.
+- **Conflict Detection**: Lightweight detection of scheduling overlaps within the same pet or across different pets, returning warnings without crashing the program.
+
+These enhancements make the app more practical for multi-pet households and busy owners.
+
 ## Getting started
 
 ### Setup
