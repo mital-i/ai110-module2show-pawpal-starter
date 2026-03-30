@@ -2,15 +2,24 @@
 
 ## 1. System Design
 
+**Three core actions:** adding a pet, adding tasks for the pet, generate a schedule for the tasks based on constraints
+
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+  The initial UML design shows five main classes: Owner, Pet, Task, Scheduler, and Schedule. The Scheduler acts as the main container for the entire program, managing relationships between Owner, Pet, and a set of Tasks to make a Schedule. Relationships include composition (Scheduler has Owner and Pet), aggregation (Scheduler manages Tasks), and dependency (Scheduler generates Schedule).
 - What classes did you include, and what responsibilities did you assign to each?
+
+  - Owner - Represents the pet owner, holding information about available time, preferred time slots, and other preferences. Responsible for providing constraints that influence scheduling decisions.
+  - Pet - Represents the pet, storing basic details like name, species, age, and special needs. Responsible for providing pet-specific information that may affect task selection.
+  - Task - Represents individual pet care activities, containing details like title, duration, priority, category, frequency, and time preferences. Responsible for encapsulating task-specific logic such as priority scoring and due date checking.
+  - Schedular - The core logic engine that takes Owner, Pet, and Tasks as input. Responsible for filtering eligible tasks, prioritizing them, resolving conflicts, generating the daily schedule, and explaining choices.
+  - Schedule - Represents the output daily plan, containing scheduled tasks with timings and reasons. Responsible for displaying the plan and providing explanations for why tasks were chosen or omitted.
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+- Did your design change during implementation Yes
+- If yes, describe at least one change and why you made it. I added a Schedular class to manage the rest of the 4 classes so that it would be easier to manage changes to the other objects. Schedular object makes it easy to access attributes and methods in the other 4 classes.
 
 ---
 
