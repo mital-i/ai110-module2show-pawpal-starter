@@ -22,16 +22,21 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
-## Smarter Scheduling
+## Features
 
-The PawPal+ scheduler now includes advanced features for efficient pet care planning:
+- **Sorting by time**: Tasks are sorted chronologically by preferred time slot — morning maps to 06:00, afternoon to 12:00, evening to 18:00 — using `datetime.strptime` for accurate ordering.
+- **Filtering by pet or status**: Tasks can be filtered by pet name and/or completion status, allowing the UI to show only incomplete items or tasks for a specific pet.
+- **Priority-aware scheduling**: `prioritize_tasks` ranks eligible tasks by a composite score: time-slot fit (whether the task matches an available owner slot), numeric priority (high=3, medium=2, low=1) plus a bonus for senior or special-needs pets, and shorter duration as a tiebreaker.
+- **Daily and weekly recurrence**: When a task is marked complete, `complete_task` automatically creates a new instance due the next day (daily) or in 7 days (weekly) using `timedelta`, so recurring care is never dropped.
+- **Conflict warnings**: `detect_conflicts` checks for overlapping time intervals both within a single pet's tasks and across different pets, surfacing warning messages without crashing the scheduler.
+- **Available-time cap**: `generate_schedule` enforces the owner's `available_time_per_day` budget, skipping tasks that would exceed the daily limit and adding a warning for each skipped task.
+- **Pet care categorization**: `get_care_category` classifies each pet (puppy, adult dog, senior dog, kitten, adult cat, senior cat, other) based on species and age, and the priority scorer awards bonus points to senior pets and those with special needs.
 
-- **Time-based Sorting**: Tasks are sorted by preferred time slots (morning/afternoon/evening) using datetime parsing for accurate chronological ordering.
-- **Flexible Filtering**: Filter tasks by pet name or completion status to focus on specific needs or incomplete items.
-- **Recurring Task Management**: Daily and weekly tasks automatically generate new instances for the next occurrence when completed, using timedelta for precise date calculations.
-- **Conflict Detection**: Lightweight detection of scheduling overlaps within the same pet or across different pets, returning warnings without crashing the program.
+## Demo
 
-These enhancements make the app more practical for multi-pet households and busy owners.
+![PawPal+ demo screenshot 1](demo1.png)
+
+![PawPal+ demo screenshot 2](demo2.png)
 
 ## Getting started
 

@@ -41,13 +41,13 @@
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)? I used it mostly for debugging and for writing tests.
+- What kinds of prompts or questions were most helpful? It was most effective when I told it which file to work in and what tasks to complete in that file.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+- Describe one moment where you did not accept an AI suggestion as-is. I didn't agree with the AI's suggestion on the initial uml diagram as it added a lot of unnecessary classes.
+- How did you evaluate or verify what the AI suggested? I check the changes it makes before pushing the code. I ran the test files every time a change was made, and I also did manual testing through the UI to make sure the app was working the way it was supposed to.
 
 ---
 
@@ -55,13 +55,13 @@
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+- What behaviors did you test? I tested adding tasks, conflict detection, and recurring task behavior.
+- Why were these tests important? These were the core functionalities that the user would interact with so it was important to make sure it was working perfectly.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+- How confident are you that your scheduler works correctly? I am 90% sure it works well. I am not sure if there are any edge cases I didn't check.
+- What edge cases would you test next if you had more time? I would check by adding more pets and seeing if it detects time conflicts across multiple pets for the same owner.
 
 ---
 
@@ -69,12 +69,12 @@
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+- What part of this project are you most satisfied with? I am satisfied with the features I added to the scheduler.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+- If you had another iteration, what would you improve or redesign? I would add a visualization of the current owner's pets to see how many pets each owner has. I could also create a UI that makes the schedule look nicer. I can possibly also add an option for the schedule to be imported into the owner's google calendar so they have all the tasks blocked out.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+- What is one important thing you learned about designing systems or working with AI on this project? I learnt that even though AI is good at coding, I still have to trust my judgement when designing an application. I shouldn't blindly trust an AI to do everything perfectly.

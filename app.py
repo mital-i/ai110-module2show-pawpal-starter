@@ -74,11 +74,37 @@ with st.form("add_pet_form"):
 st.subheader("Current Pets")
 if st.session_state.owner.pets:
     for pet in st.session_state.owner.pets:
-        st.write(f"- {pet.name} ({pet.species}, {pet.age} years)")
-        if pet.tasks:
-            st.write("  Tasks:")
-            for task in pet.tasks:
-                st.write(f"    - {task.title} ({task.priority}, {task.duration_minutes} min)")
+        with st.expander(f"🐾 {pet.name} ({pet.species}, {pet.age} years)"):
+            st.write(f"**Care Category:** {pet.get_care_category()}")
+            if pet.special_needs:
+                st.write(f"**Special Needs:** {', '.join(pet.special_needs)}")
+                st.info("This pet requires special attention")
+            
+            if pet.tasks:
+                st.write("**Tasks:**")
+                # Use Scheduler to sort tasks by time
+                scheduler = Scheduler(st.session_state.owner)
+                sorted_tasks = scheduler.sort_by_time(pet.tasks)
+                
+                # Display tasks in a table
+                task_data = []
+                for task in sorted_tasks:
+                    status_icon = "✅" if task.completion_status else "⏳"
+                    mandatory_icon = "⚠️" if task.is_mandatory else ""
+                    task_data.append({
+                        "Status": status_icon,
+                        "Task": task.title,
+                        "Priority": task.priority.title(),
+                        "Duration": f"{task.duration_minutes} min",
+                        "Time": task.preferred_time_range or "Any",
+                        "Category": task.category,
+                        "Mandatory": mandatory_icon
+                    })
+                
+                if task_data:
+                    st.table(task_data)
+            else:
+                st.info("No tasks added yet.")
 else:
     st.info("No pets added yet.")
 
@@ -114,17 +140,73 @@ else:
 st.subheader("Build Schedule")
 st.caption("This button calls your scheduling logic.")
 
+# Show all tasks sorted by time preference
+if st.session_state.owner.pets and any(pet.tasks for pet in st.session_state.owner.pets):
+    st.subheader("📋 All Tasks (Sorted by Time)")
+    scheduler = Scheduler(st.session_state.owner)
+    all_tasks = st.session_state.owner.get_all_tasks()
+    sorted_tasks = scheduler.sort_by_time(all_tasks)
+    
+    # Filter to show only incomplete tasks
+    incomplete_tasks = [task for task in sorted_tasks if not task.completion_status]
+    
+    if incomplete_tasks:
+        task_overview = []
+        for task in incomplete_tasks:
+            pet_name = next((pet.name for pet in st.session_state.owner.pets if task in pet.tasks), "Unknown")
+            task_overview.append({
+                "Pet": pet_name,
+                "Task": task.title,
+                "Priority": task.priority.title(),
+                "Time Slot": task.preferred_time_range or "Flexible",
+                "Duration": f"{task.duration_minutes} min",
+                "Category": task.category,
+                "Mandatory": "Yes" if task.is_mandatory else "No"
+            })
+        
+        st.table(task_overview)
+        st.info(f"📊 Total incomplete tasks: {len(incomplete_tasks)} | Total time needed: {sum(task.duration_minutes for task in incomplete_tasks)} min")
+    else:
+        st.success("🎉 All tasks are completed!")
+
 # Validation: Check total task time vs available time
-total_task_time = sum(task.duration_minutes for pet in st.session_state.owner.pets for task in pet.tasks)
+total_task_time = sum(task.duration_minutes for pet in st.session_state.owner.pets for task in pet.tasks if not task.completion_status)
 if total_task_time > st.session_state.owner.available_time_per_day:
-    st.warning(f"Total task time ({total_task_time} min) exceeds available time ({st.session_state.owner.available_time_per_day} min). Some tasks may not be scheduled.")
+    st.warning(f"⚠️ Total incomplete task time ({total_task_time} min) exceeds available time ({st.session_state.owner.available_time_per_day} min). Some tasks may not be scheduled.")
 
 if st.button("Generate schedule"):
     if st.session_state.owner.pets:
         scheduler = Scheduler(st.session_state.owner)
         today = datetime.now().strftime("%Y-%m-%d")
-        schedule = scheduler.generate_schedule(today)
-        st.subheader("Today's Schedule")
-        st.code(scheduler.display_schedule(schedule))
+        schedule, warnings = scheduler.generate_schedule(today)
+        
+        st.subheader("📅 Today's Schedule")
+        
+        if schedule:
+            # Display schedule in a professional table format
+            schedule_data = []
+            for item in schedule:
+                task = item["task"]
+                pet_name = next((pet.name for pet in st.session_state.owner.pets if task in pet.tasks), "Unknown")
+                schedule_data.append({
+                    "Time": f"{item['start_time']}-{item['end_time']}",
+                    "Pet": pet_name,
+                    "Task": task.title,
+                    "Category": task.category,
+                    "Priority": task.priority.title(),
+                    "Duration": f"{task.duration_minutes} min"
+                })
+            
+            st.table(schedule_data)
+            st.success(f"✅ Successfully scheduled {len(schedule)} tasks")
+        else:
+            st.info("📭 No tasks scheduled for today")
+        
+        # Display warnings prominently
+        if warnings:
+            st.subheader("⚠️ Schedule Warnings")
+            for warning in warnings:
+                st.warning(warning)
+        
     else:
-        st.warning("Add pets and tasks first.")
+        st.warning("🐾 Add pets and tasks first.")
